@@ -10,7 +10,7 @@ import pickle
 # 1️⃣ Cargar datos y modelo
 # ------------------------------------
 # Cargar dataset base (para los promedios históricos)
-df = pd.read_csv("data/hotel_bookings.csv")
+df = pd.read_csv("Data/hotel_bookings.csv")
 
 # Codificar variables
 month_order = ["January","February","March","April","May","June",
