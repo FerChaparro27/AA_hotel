@@ -180,11 +180,7 @@ if os.path.exists("modelo_knn.pkl"):
 else:
     st.warning("⚠️ No se encontró el archivo `modelo_knn.pkl`. Guardalo en la raíz del proyecto.")
 
-# ------------------------------------
-# 5️⃣ Créditos / Footer
-# ------------------------------------
-st.markdown("---")
-st.caption("Desarrollado por Francisco Romero - Fernando Chaparro — Predicción de Ocupación Hotelera 🧠")
+
 
 # ------------------------------------
 # 4️⃣️⃣️⃣ Clustering de clientes (K-Means)
@@ -264,3 +260,8 @@ except FileNotFoundError:
 except Exception as e:
     st.error(f"❌ Error al ejecutar el modelo de clustering: {e}")
 
+# ------------------------------------
+# 5️⃣ Créditos / Footer
+# ------------------------------------
+st.markdown("---")
+st.caption("Desarrollado por Francisco Romero - Fernando Chaparro — Predicción de Ocupación Hotelera 🧠")
