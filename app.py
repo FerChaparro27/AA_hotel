@@ -186,5 +186,81 @@ else:
 st.markdown("---")
 st.caption("Desarrollado por Francisco Romero - Fernando Chaparro — Predicción de Ocupación Hotelera 🧠")
 
+# ------------------------------------
+# 4️⃣️⃣️⃣ Clustering de clientes (K-Means)
+# ------------------------------------
+st.markdown("---")
+st.subheader("📊 Clasificación de reserva según comportamiento (Clustering K-Means)")
 
+try:
+    # Cargar modelo y scaler
+    with open("modelo_clusters.pkl", "rb") as f:
+        kmeans_final = pickle.load(f)
+    with open("scaler.pkl", "rb") as f:
+        scaler_cluster = pickle.load(f)
+
+    columnas_cluster = [
+        'lead_time', 
+        'adr', 
+        'stays_in_week_nights',
+        'stays_in_weekend_nights',
+        'previous_cancellations',
+        'previous_bookings_not_canceled',
+        'is_repeated_guest',
+        'total_of_special_requests',
+        'adults',
+        'children'
+    ]
+
+    st.markdown("### ✏️ Ingresá los valores para estimar el tipo de cliente o reserva")
+
+    # Entradas del usuario
+    lead_time_c = st.number_input("Lead time (días de anticipación)", 0, 1000, 100, key="lead_time_cluster")
+    adr_c = st.number_input("ADR (tarifa diaria promedio, €)", 0.0, 1000.0, 120.0, key="adr_cluster")
+    stays_week_c = st.number_input("Noches entre semana", 0, 30, 3, key="stays_week_cluster")
+    stays_weekend_c = st.number_input("Noches de fin de semana", 0, 10, 1, key="stays_weekend_cluster")
+    prev_cancel_c = st.number_input("Cancelaciones previas", 0, 20, 0, key="prev_cancel_cluster")
+    prev_not_cancel_c = st.number_input("Reservas previas no canceladas", 0, 50, 0, key="prev_not_cancel_cluster")
+    is_repeated_c = st.selectbox("Cliente repetido", [0, 1], format_func=lambda x: "Sí" if x==1 else "No", key="repeated_cluster")
+    special_req_c = st.number_input("Solicitudes especiales", 0, 10, 1, key="special_req_cluster")
+    adults_c = st.number_input("Adultos", 1, 10, 2, key="adults_cluster")
+    children_c = st.number_input("Niños", 0, 10, 0, key="children_cluster")
+
+    if st.button("🎯 Clasificar reserva (K-Means)", key="btn_cluster"):
+        # Crear DataFrame con los valores del usuario
+        df_cluster_input = pd.DataFrame([{
+            'lead_time': lead_time_c,
+            'adr': adr_c,
+            'stays_in_week_nights': stays_week_c,
+            'stays_in_weekend_nights': stays_weekend_c,
+            'previous_cancellations': prev_cancel_c,
+            'previous_bookings_not_canceled': prev_not_cancel_c,
+            'is_repeated_guest': is_repeated_c,
+            'total_of_special_requests': special_req_c,
+            'adults': adults_c,
+            'children': children_c
+        }])
+
+        # Escalar igual que durante el entrenamiento
+        X_scaled_cluster = scaler_cluster.transform(df_cluster_input)
+
+        # Predecir cluster
+        cluster_pred = kmeans_final.predict(X_scaled_cluster)[0]
+
+        st.success(f"📍 La reserva pertenece al **Cluster {cluster_pred}**")
+
+        # Descripciones breves de los 4 clusters
+        descripciones = {
+            0: "🟢 **Cluster 0:** Clientes organizados, reservan con anticipación, pocas cancelaciones y estadías medias.",
+            1: "🟣 **Cluster 1:** Clientes con alto gasto (ADR alto), muchas solicitudes especiales y estadías largas.",
+            2: "🟠 **Cluster 2:** Clientes impulsivos o inconstantes, reservas cortas y cancelaciones frecuentes.",
+            3: "🔴 **Cluster 3:** Casos menos comunes — grupos grandes o reservas con patrones atípicos."
+        }
+
+        st.info(descripciones.get(cluster_pred, "Sin descripción disponible."))
+
+except FileNotFoundError:
+    st.warning("⚠️ No se encontraron los archivos `modelo_clusters.pkl` o `scaler.pkl`. Guardalos en la raíz del proyecto.")
+except Exception as e:
+    st.error(f"❌ Error al ejecutar el modelo de clustering: {e}")
 
