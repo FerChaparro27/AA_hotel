@@ -247,10 +247,10 @@ try:
 
         # Descripciones breves de los 4 clusters
         descripciones = {
-            0: "🟢 **Cluster 0:** Clientes organizados, reservan con anticipación, pocas cancelaciones y estadías medias.",
-            1: "🟣 **Cluster 1:** Clientes con alto gasto (ADR alto), muchas solicitudes especiales y estadías largas.",
-            2: "🟠 **Cluster 2:** Clientes impulsivos o inconstantes, reservas cortas y cancelaciones frecuentes.",
-            3: "🔴 **Cluster 3:** Casos menos comunes — grupos grandes o reservas con patrones atípicos."
+            0: "🟢 **Cluster 0:** El Turista Planificador - Planifica con mucha anticipación, se hospeda varios días y suele cancelar con frecuencia..",
+            1: "🟣 **Cluster 1:** El Corporativo Leal - Cliente habitual, estadías cortas, reservas de último momento y casi sin cancelaciones",
+            2: "🟠 **Cluster 2:** El Cliente de Paso - Viaja poco tiempo, reserva con poca anticipación y presenta cancelaciones ocasionales.",
+            3: "🔴 **Cluster 3:** La Familia de Vacaciones - Viaja en grupo familiar, planifica con antelación, paga más y cancela con frecuencia."
         }
 
         st.info(descripciones.get(cluster_pred, "Sin descripción disponible."))
